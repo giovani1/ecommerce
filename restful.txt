@@ -1,0 +1,197 @@
+"/c/id_name/product"
+"/s/id_name/product"
+"/categorie"
+"/categorie/add"get,post
+"/categorie/update"post
+"/categorie/update?id"
+"/categorie/delete"post
+
+"/product/id_name"
+"/product/add"get,post
+"/product/update"post
+"/product/c/update"post
+"/product/o/add"post
+"/product/o/update"post
+"/product/o/delete"post
+"/product/update?id"
+"/product/delete"post
+"/product/block"get
+
+
+
+"/cart"
+"/cart/add"post
+"/cart/update"post
+"/cart/delete"post
+
+"/orders"
+"/order?id"
+"/order/add"post
+
+"/options"
+"/options/add"
+"/options/update?idoptions"get,post
+"/option/delete"
+
+"/optionsvalue/add"
+"/optionsvalue/update"
+"/optionsvalue/delete"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+visitor(
+
+/product?categorie=categoriename&&seller=name_seller
+get:fetsh all
+
+/product/id
+get:fetsh item
+
+/product/idprouct/attribute:none
+/product/idproduct/attribute/id:none
+
+/account:signin&&signup
+
+/cart:none
+/cart/idproduct:none
+/order:none
+/order/idorder:none
+/category/name:none
+/category:none
+)
+client(
+/product?categorie=categoriename&&seller=name_seller
+get:fetsh all
+
+/product/id
+get:fetsh item
+
+/cart
+get:fetsh all products
+
+/cart/idproduct
+put:update
+delete:delete product from order 
+
+/order
+get:fetsh all orders
+
+/order/idorder
+get:fetsh that order
+
+)
+seller(
+/product
+post:create new product
+get:fetsh all
+
+/product/id
+get:fetsh item
+put:update
+delete:delete item
+
+/product/idprouct/attribute
+post:add attribute
+get:fetsh all attributes
+
+/product/idproduct/attribute/id
+put:update
+delete:delete attribute
+
+)
+seller/name_seller/product
+post:create new product
+get:fetsh all
+put:nada
+delete:nada
+
+category/idcategory/product
+post:create new product
+get:fetsh all
+put:nada
+delete:nada
+
+/product
+post:create new product
+get:fetsh all
+put:nada
+delete:nada
+
+/product/id
+post:nada
+get:fetsh item
+put:update
+delete:delete item
+
+/product/idprouct/attribute
+post:add attribute
+get:fetsh all attributes
+put:nada
+delete:nada
+
+/product/idproduct/attribute/id
+post:nada
+get:fetsh that attribute
+put:update
+delete:delete attribute
+
+client/cart
+post:add new product
+put:nada
+get:fetsh all products
+delte:delete all products
+
+client/cart/idproduct
+post:nada
+put:update
+delete:delete product
+get:fetsh product
+
+client/order(notmodifable)
+post:add new order
+put:nada
+delete:nada
+get:fetsh all orders
+
+/client/order/idorder(notmodifable)
+post:nada
+put:update
+get:fetsh that order
+delete:delete order
+
+/category(admin
+post:add new category
+put:nada
+delete:nada
+get:all categories
+
+/category/id(admin
+post:nada
+put:update
+get:fetsh category
+delete:delete category
+
