@@ -94,11 +94,13 @@ public class CategorieForm extends Form{
 	public Categorie addCategorie1(HttpServletRequest request, Categorie categorie) {
 		try {
 			Part part=request.getPart(Cons.CATEGORIE_IMAGE_FIELD);
-			File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+categorie.getId()+"_"+categorie.getDate_added()+".jpg");
+			File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+"\\"+categorie.getId()+"_"+categorie.getDate_added().getTime()+".jpg");
 			try (InputStream input = part.getInputStream()) {
 			    BufferedImage inputImage = ImageIO.read(input);
 			    ImageIO.write(inputImage, "jpg", uploads);
-			    categorie.setImage("/resources/img/"+uploads.getName());
+			    categorie.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
+			}catch (Exception e) {
+				setError(Cons.CATEGORIE_IMAGE_FIELD,e.getMessage());
 			}
 		} catch (Exception e) {
 			setError(Cons.CATEGORIE_IMAGE_FIELD,e.getMessage());
