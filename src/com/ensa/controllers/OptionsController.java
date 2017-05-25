@@ -44,7 +44,6 @@ public class OptionsController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getServletPath().equals("/options")){
 			System.out.println(this.getServletContext().getRealPath("/resources/img"));
-			updateOptions();
 			this.getServletContext().getRequestDispatcher( VUE_FORM ).forward( request, response );
 		}
 	}
@@ -56,7 +55,7 @@ public class OptionsController extends HttpServlet {
 			options = form.AddProductOptions(request);
 			if(form.getResult()=="true"){
 				pos.add(options);
-				//updateOptions();
+				updateOptions();
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/options");
 		}else if(request.getServletPath().equals("/options/update")){
@@ -65,7 +64,7 @@ public class OptionsController extends HttpServlet {
 			productOptions = form1.updateProductOptions(request);
 			if(form1.getResult()=="true"){
 				pos.update(productOptions);
-				//updateOptions();
+				updateOptions();
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/options");
 		}else if(request.getServletPath().equals("/options/delete")){
@@ -74,7 +73,7 @@ public class OptionsController extends HttpServlet {
 			productOptions = form1.deleteProduct_options(request);
 			if(form1.getResult()=="true"){
 				pos.remove(productOptions);
-				//updateOptions();
+				updateOptions();
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/options");
 		}else if(request.getServletPath().equals("/optionsvalue/add")){
@@ -90,7 +89,7 @@ public class OptionsController extends HttpServlet {
 			pov = form1.updateProduct_options_value(request);
 			if(form1.getResult()=="true"){
 				pos.updateValue(pov);
-				//updateOptions();
+				updateOptions();
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/options");
 		}else if(request.getServletPath().equals("/optionsvalue/delete")){
@@ -99,7 +98,7 @@ public class OptionsController extends HttpServlet {
 			pov = form1.deleteProduct_options_value(request);
 			if(form1.getResult()=="true"){
 				pos.removeValue(pov);
-				//updateOptions();
+				updateOptions();
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/options");
 		}

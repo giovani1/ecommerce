@@ -51,18 +51,14 @@ public class OrderController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session =request.getSession();
-		//Client client=(Client) session.getAttribute("account");
-		Client client=null;
+		Client client=(Client) session.getAttribute("account");
 		if(request.getServletPath().equals("/order/add")){
 			OrderForm form=new OrderForm(cs,os);
 			Orders order=form.addOrder(request,client);
 			if(form.getResult()=="true"){
 				order=os.add(order);
-				
 			}
-			else{
-				response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
-			}
+			response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
 		}
 		
 	}

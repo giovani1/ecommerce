@@ -98,11 +98,9 @@ public class AddCategorie extends HttpServlet {
 			categorie=form.deleteCategorie(request);
 			if(form.getResult()=="true"){
 				cs.remove(categorie);
-				updateCategories();
-				response.sendRedirect(this.getServletContext().getContextPath()+"/categorie");
-			}else{
-				response.sendRedirect(this.getServletContext().getContextPath()+"/categorie");
+				updateCategories();	
 			}
+			response.sendRedirect(this.getServletContext().getContextPath()+"/categorie");
 		}	
 	}
 	

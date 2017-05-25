@@ -7,8 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.ensa.forms.CartForm;
 import com.ensa.models.Cart;
+import com.ensa.models.Client;
 import com.ensa.service.CartService;
 import com.ensa.service.ProductService;
 import com.ensa.service.Product_attributesService;
@@ -36,10 +39,11 @@ public class CartController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session= request.getSession();
+		HttpSession session= request.getSession();
 		if(request.getServletPath().equals("/cart/add")){
+			Client client=(Client)session.getAttribute("account");
 			CartForm form=new CartForm(cs,ps,pas);
-			Cart cart=form.addCart(request, null);
+			Cart cart=form.addCart(request, client);
 			if(form.getResult()=="true"){
 				cs.addCart(cart);
 			}

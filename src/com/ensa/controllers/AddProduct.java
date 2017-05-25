@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ensa.forms.ProductForm;
 import com.ensa.models.Categorie;
@@ -85,10 +86,9 @@ public class AddProduct extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session=request.getSession();
+		HttpSession session=request.getSession();
 		if(request.getServletPath().equals("/product/add")){
-			//Seller seller=(Seller)session.getAttribute("account");
-			Seller seller=null;
+			Seller seller=(Seller)session.getAttribute("account");
 			ProductForm form =new ProductForm(ps,cs,pos,pas);
 			Product product = form.addProduct(request);
 			if(form.getResult()=="true"){
@@ -146,8 +146,6 @@ public class AddProduct extends HttpServlet {
 				list.remove(attributes);
 				product.setProducts_attributes(list);
 				ps.update(product);
-				//pas.remove(attributes);
-				//ps.update(attributes.getProduct());
 			}
 			response.sendRedirect(this.getServletContext().getContextPath()+"/p/"+attributes.getProduct().getUrl());
 		}else if(request.getServletPath().equals("/product/delete")){

@@ -41,9 +41,8 @@ public class ProductController extends HttpServlet {
 	Product_optionsService pos;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session=request.getSession();
-		//String accountType=(String) session.getAttribute("accountType");
-		String accountType="";
+		HttpSession session=request.getSession();
+		String accountType=(String) session.getAttribute("accountType");
 		ProductForm form =new ProductForm(ps, cs, pos,pas);
 		Product product=form.getProduct(request);
 		if(form.getResult()=="true"){
