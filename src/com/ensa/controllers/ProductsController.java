@@ -54,7 +54,7 @@ public class ProductsController extends HttpServlet {
 		if(s.s=="seller"){
 			//Seller seller=(Seller) session.getAttribute("account");
 			Seller seller=null;
-			/*if(accountType=="seller"){
+			if(accountType=="seller"){
 				products=ps.findBySeller(seller.getId());
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_SELLER ).forward( request, response );
@@ -66,7 +66,7 @@ public class ProductsController extends HttpServlet {
 				products=ps.findBySeller(seller.getId(),true);
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
-			}*/
+			}
 		}else if(s.s=="categorie"){
 			//for the breadcrump
 			ArrayList<Categorie> categories=new ArrayList<>();

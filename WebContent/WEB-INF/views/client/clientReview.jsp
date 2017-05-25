@@ -36,6 +36,7 @@
 									<th>Note</th>
 									<th colspan="2">Commentaire</th>
 									<th>Produit</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -48,6 +49,16 @@
 										</td>
 										<td colspan="2">${review.getText() }</td>
 										<td>${review.getProduct().getName() }</td>
+										<td>
+											<c:choose>
+												<c:when test = "${ review.getStatus() eq false }">
+													<span class="label label-danger">bloquer</span>
+												</c:when>
+												<c:otherwise>
+													<span class="label label-success">verifier</span>
+												</c:otherwise>
+											</c:choose>
+										</td>
 										<td><a href="<c:url value="/review/update?id=${review.getId()}"/>" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a></td>
 									</tr>
 								</c:forEach>
