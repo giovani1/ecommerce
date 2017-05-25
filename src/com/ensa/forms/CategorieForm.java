@@ -105,6 +105,11 @@ public class CategorieForm extends Form{
 		} catch (Exception e) {
 			setError(Cons.CATEGORIE_IMAGE_FIELD,e.getMessage());
 		}
+		if(errors.isEmpty()){
+			result="true";
+		}
+		else
+			result="false";
 		return categorie;
 	}
 	
