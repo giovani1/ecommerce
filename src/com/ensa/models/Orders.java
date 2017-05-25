@@ -36,8 +36,8 @@ public class Orders implements Serializable {
 	@NotNull
 	private String delivery_city;
 	
-	//@Temporal(TemporalType.TIME)
-	//private Date last_modified;
+	@Temporal(TemporalType.TIME)
+	private Date last_modified;
 	
 	@Temporal(TemporalType.TIME)
 	private Date date_purchased;
@@ -133,13 +133,13 @@ public class Orders implements Serializable {
 	/**
 	 * @return the last_modified
 	 */
-	/*public Date getLast_modified() {
+	public Date getLast_modified() {
 		return last_modified;
 	}
 	
 	public void setLast_modified(Date last_modified) {
 		this.last_modified = last_modified;
-	}*/
+	}
 	/**
 	 * @return the date_purchased
 	 */
