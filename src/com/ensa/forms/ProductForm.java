@@ -87,17 +87,15 @@ public class ProductForm extends Form{
 			Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 			try (InputStream input = part.getInputStream()) {
 			    BufferedImage inputImage = ImageIO.read(input);
-			    File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
+			    File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+"\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 			    ImageIO.write(inputImage, "jpg", uploads);
-			    product.setImage("/resources/img/"+uploads.getName());
+			    product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
 			}
 			catch (Exception e) {
 				setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
-				e.printStackTrace();
 			}
 		} catch (Exception e) {
 			setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
-			e.printStackTrace();
 		}
 		product.setUrl(product.getId()+"_"+product.getName().replace(' ','_').trim());
 		if(errors.isEmpty()){
