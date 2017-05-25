@@ -33,13 +33,8 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 				value="sql-create-script" />
 			<property name="eclipselink.drop-ddl-jdbc-file-name" value="sql-drop-script" />
 			
-<<<<<<< HEAD
-			 <!--<property name="eclipselink.ddl-generation.output-mode" value="sql-script" />-->
-			<property name="eclipselink.ddl-generation.output-mode" value="both" />
-=======
 			 <property name="eclipselink.ddl-generation.output-mode" value="sql-script" />
 			<!-- <property name="eclipselink.ddl-generation.output-mode" value="both" /> --> 
->>>>>>> 618c6138ea5060e9828b197407275134c2de6625
 			<property name="eclipselink.logging.level" value="FINEST" />
 			<property name="javax.persistence.schema-generation.database.action"
 				value="drop-and-create" />
