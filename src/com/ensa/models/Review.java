@@ -6,8 +6,10 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = Review.FIND_ALL, query = "SELECT c FROM Review c")
 public class Review implements Serializable {
-
+	public static final String FIND_ALL = "Review.findAll";
+	
 	@Transient
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +31,9 @@ public class Review implements Serializable {
 
 	@Column
 	private Float review_rating;
-
+	
+	private boolean status;
+	
 	@Temporal(TemporalType.TIME)
 	private Date date_added;
 
@@ -41,6 +45,14 @@ public class Review implements Serializable {
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import com.ensa.models.Client;
 import com.ensa.models.Product;
@@ -28,6 +29,13 @@ public class ReviewService {
 		// TODO Auto-generated constructor stub
 	}
 
+	public List<Review> getAllReviews() {
+		
+		TypedQuery<Review> query = em.createNamedQuery(Review.FIND_ALL, Review.class);
+		return (List<Review>)query.getResultList();
+		
+	}
+	
 	public Review add(Review review) {
 		em.persist(review);
 		return review;
