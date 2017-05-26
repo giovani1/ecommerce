@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ensa.forms.ProductForm;
 import com.ensa.models.Categorie;
@@ -23,7 +24,9 @@ import com.ensa.service.CategorieService;
 import com.ensa.service.ProductService;
 import com.ensa.service.Product_attributesService;
 import com.ensa.service.Product_optionsService;
+import com.ensa.service.SellerService;
 import com.ensa.util.Cons;
+import com.ensa.util.Name;
 
 @WebServlet(value={"/product/add","/product/update","/product/delete","/product/block",
 		"/product/c/update","/product/o/add","/product/o/update","/product/o/delete"})
@@ -44,6 +47,9 @@ public class AddProduct extends HttpServlet {
     @EJB
     Product_attributesService pas;
    
+    @EJB
+    SellerService ss;
+    
 	@Override
 	public void init() throws ServletException {
 		List<Categorie> categories=cs.findAll();
@@ -62,8 +68,8 @@ public class AddProduct extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getServletPath().equals("/product/add")){
-			this.getServletContext().getRequestDispatcher( ADD_FORM ).forward( request, response );
+		if(request.getServletPath().equals("/product/add")){		
+				this.getServletContext().getRequestDispatcher( ADD_FORM ).forward( request, response );
 		}
 		else if(request.getServletPath().equals("/product/update")){
 			ProductForm form =new ProductForm(ps,cs,pos,pas);
@@ -85,16 +91,19 @@ public class AddProduct extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session=request.getSession();
+		HttpSession session=request.getSession();
 		if(request.getServletPath().equals("/product/add")){
-			//Seller seller=(Seller)session.getAttribute("account");
-			Seller seller=null;
+			Seller seller=(Seller)session.getAttribute(Name.ACCOUNT);
+			//Seller seller=null;
 			ProductForm form =new ProductForm(ps,cs,pos,pas);
 			Product product = form.addProduct(request);
 			if(form.getResult()=="true"){
 				product.setSeller(seller);
 				product.setStatus(false);
 				product = ps.add(product);
+				ss.addProductToSeller(product.getId(),seller.getId());
+				session.setAttribute(Name.ACCOUNT,ss.getSeller(seller.getId()));
+				
 				product=form.addProduct1(request, product);
 				if(form.getResult()=="true"){
 					product.setStatus(true);
