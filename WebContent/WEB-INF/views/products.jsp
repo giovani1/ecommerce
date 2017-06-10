@@ -24,40 +24,31 @@
 
 <body>
 	<c:import url="header.jsp" />
-	<ol class="breadcrumb">
-	<c:forEach items="${ requestScope.categorie }" var="categorie" varStatus="boucle">
-	<li class="active">${ categorie.getName() }</li>
-	</c:forEach>
-	</ol>
-	 <div class="container">
-        <div class="row">
-	       <div class="col-md-9">
-		       <div class="row">
+	<div class="container">
+		<ol class="breadcrumb">
+		<c:forEach items="${ requestScope.categorie }" var="categorie" varStatus="boucle">
+		<li class="active">${ categorie.getName() }</li>
+		</c:forEach>
+		</ol>
+      	<div class="row">
+      	
+	       <div class="col-md-12">
+	       
 			      <c:forEach items="${ requestScope.products }" var="product" varStatus="boucle">
-		          <div class="col-sm-4 col-lg-4 col-md-4">
-		              <div class="thumbnail">
-		                  <img src=${product.image } alt="${ product.name }">
-		                  <div class="caption">
-		                      <h4 class="pull-right">${ product.price }</h4>
-		                      <h4><a href='<c:url value="/p/${ product.getUrl() }"/>'>${ product.name }</a>
-		                      </h4>
-		                  </div>
-		                  <div class="ratings">
-		                      <p class="pull-right">15 reviews</p>
-		                      <p>
-		                          <span class="glyphicon glyphicon-star"></span>
-		                          <span class="glyphicon glyphicon-star"></span>
-		                          <span class="glyphicon glyphicon-star"></span>
-		                          <span class="glyphicon glyphicon-star"></span>
-		                          <span class="glyphicon glyphicon-star"></span>
-		                      </p>
-		                  </div>
-		              </div>
-		          </div>
+			       <div class="col-md-3">
+	        			<div class="thumbnail">
+					      <a href="<c:url value="/p/${product.getUrl() }"/>"><img height="50px" src="<c:url value="${product.getImage()}"/>" /></a>
+					      <div class="caption">
+					        <h3>${ product.getName() }</h3>
+					        <p><a href="<c:url value="/s/${ product.getSeller().getId() }_${product.getSeller().getSeller_name() }"/>">${product.getSeller().getSeller_name() }</a></p>
+	        				<p class="label label-success ">${ product.getPrice() } MAD</p>
+					      </div>
+	    				</div>	
+	        		</div>
 			      </c:forEach>
-		      </div>
 	      </div>
-      </div>
+	
+		</div>
     </div>
 	<c:import url="footer.jsp" />
 

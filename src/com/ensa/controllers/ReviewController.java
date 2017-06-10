@@ -89,10 +89,12 @@ public class ReviewController extends HttpServlet {
 			review.setDate_added(new Date());
 			review.setLast_modified(new Date());
 			
+			int productId = Integer.parseInt(request.getParameter("id"));
+			
 			client = rs.addReviewToClient(review,client.getId());
 			client = cs.getClientById(client.getId());
 			request.getSession().setAttribute(Name.ACCOUNT,client);
-//			//rs.addReviewToProduct(review.getId(), productId)
+ 			rs.addReviewToProduct(review.getId(), productId);
 			//add review to product;
 			//last seen here
 			response.sendRedirect(this.getServletContext().getContextPath()+Name.REVIEWS);	

@@ -33,11 +33,11 @@ public class ProductForm extends Form{
 	private Product_optionsService pos;
 	private Product_attributesService pas;
 	
-	private Pattern reg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-]+)$");
+	private Pattern reg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
 	private Pattern reg1 = Pattern.compile("^(option_)([0-9]+)$");
-	private Pattern sreg = Pattern.compile("^(\\/s\\/)([0-9]+)(_)([a-zA-Z-]+)(/product)$");
-	private Pattern creg = Pattern.compile("(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
-	private String creg1 = "(\\/)([0-9]+)(_)([a-zA-Z-_]+)$";
+	//private Pattern sreg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
+	//private Pattern creg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
+	//private String creg1 = "(\\/)([0-9]+)(_)([a-zA-Z-_]+)$";
 	
 	public ProductForm(ProductService ps,CategorieService cs,Product_optionsService pos,Product_attributesService pas) {
 		this.ps=ps;
@@ -45,7 +45,27 @@ public class ProductForm extends Form{
 		this.pos=pos;
 		this.pas=pas;
 	}
-
+	
+	public int getProducts(HttpServletRequest request){
+		Matcher smatch = reg.matcher(request.getPathInfo());
+		int i=-1;
+		try{
+			if(smatch.find()){
+				Validation.validateId(smatch.group(2));
+				i= Integer.parseInt(smatch.group(2));
+			}
+		}catch(Exception e){
+			setError("sourceid",e.getMessage());
+		}
+		if(errors.isEmpty()){
+			result="true";
+		}
+		else{
+			result="false";
+		}
+		return i;
+	}
+	
 	public Product getProduct(HttpServletRequest request){
 		Product product=null;
 		Matcher match = reg.matcher(request.getPathInfo());
@@ -87,9 +107,13 @@ public class ProductForm extends Form{
 			Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 			try (InputStream input = part.getInputStream()) {
 			    BufferedImage inputImage = ImageIO.read(input);
-			    File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+"\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
+
+			    File uploads = new File("C:\\Users\\OkhtoBot\\workspace\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 			    ImageIO.write(inputImage, "jpg", uploads);
-			    product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
+			    System.out.println("----"+uploads.getPath());
+			    //product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
+			    product.setImage("/resources/img/"+uploads.getName());
+
 			}
 			catch (Exception e) {
 				setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
@@ -159,7 +183,7 @@ public class ProductForm extends Form{
 		product.setLast_modified(new Date());
 		
 		try{
-			Validation.validateName(name);
+			Validation.validateText(name);
 		} catch(Exception e){
 			System.out.println("name"+e.getMessage());
 			setError(Cons.PRODUCT_NAME_FIELD,e.getMessage());
@@ -249,12 +273,16 @@ public class ProductForm extends Form{
 			product=ps.find(Integer.parseInt(id));
 
 			try{
+				
+				
 				Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 				try (InputStream input = part.getInputStream()) {
 				    BufferedImage inputImage = ImageIO.read(input);
-				    File uploads = new File("C:\\Users\\med choubby\\Documents\\GitHub\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
+				    File uploads = new File("C:\\Users\\OkhtoBot\\workspace\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 				    ImageIO.write(inputImage, "jpg", uploads);
+				    System.out.println("-------- "+uploads.getAbsolutePath());
 				    product.setImage(uploads.getAbsolutePath());
+				    
 				}
 				catch (Exception e) {
 					setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
@@ -346,8 +374,8 @@ public class ProductForm extends Form{
 			result="false";
 		return product;
 	}
-
-	public source getSource(HttpServletRequest request) {
+	
+	/*public source getSource(HttpServletRequest request) {
 		System.out.println(request.getPathInfo());
 		Matcher smatch = sreg.matcher(request.getPathInfo());
 		Matcher cmatch = creg.matcher(request.getPathInfo());
@@ -380,7 +408,7 @@ public class ProductForm extends Form{
 			this.id=id;
 			this.s=s;
 		}
-	}
+	}*/
 	public Product updateCategorieProduct(HttpServletRequest request) {
 		String id = getValue(request,Cons.PRODUCT_ID_FIELD);
 		String categorie_id = getValue(request,Cons.CATEGORIE_ID_FIELD);

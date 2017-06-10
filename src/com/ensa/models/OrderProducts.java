@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = OrderProducts.FIND_BY_PRODUCT_NAME, query = "SELECT o FROM OrderProducts o WHERE o.product.name = :pname")
+    @NamedQuery(name = OrderProducts.FIND_BY_PRODUCT_NAME, query = "SELECT o FROM OrderProducts o WHERE o.product.name = :pname"),
+    @NamedQuery(name = OrderProducts.FIND_BY_SELLER, query = "SELECT o FROM OrderProducts o WHERE o.product.seller.id = :sid and o.order.status = :status")
 })
 public class OrderProducts implements Serializable {
 	
@@ -48,6 +49,7 @@ public class OrderProducts implements Serializable {
 	private List<Order_product_attributes> order_products_attributes;
 	
 	public static final String FIND_BY_PRODUCT_NAME= "Order.findByProductName";
+	public static final String FIND_BY_SELLER= "Order.findBySeller";
 	
 	/**
 	 * @return the id

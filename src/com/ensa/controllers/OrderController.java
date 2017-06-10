@@ -1,6 +1,7 @@
 package com.ensa.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -12,9 +13,13 @@ import javax.servlet.http.HttpSession;
 
 import com.ensa.forms.OrderForm;
 import com.ensa.models.Client;
+import com.ensa.models.OrderProducts;
 import com.ensa.models.Orders;
+import com.ensa.models.Product;
+import com.ensa.models.Seller;
 import com.ensa.service.CartService;
 import com.ensa.service.OrderService;
+import com.ensa.service.ProductService;
 import com.ensa.util.Cons;
 
 /**
@@ -25,25 +30,47 @@ public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String VUE_ORDERS = "/WEB-INF/views/orders.jsp";
+	private static final String VUE_ORDERS_SELLER = "/WEB-INF/views/ordersSeller.jsp";
 	private static final String VUE_ORDER = "/WEB-INF/views/order.jsp";
 	private static final String ATT_ORDER = "order";
+	private static final String ATT_ORDERS = "orders";
+
+	private static final String ATT_PRODUCTS = "products";
+
+	
 	
     @EJB
 	OrderService os;
     @EJB
 	CartService cs;
+    @EJB
+	ProductService ps;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getServletPath().equals("/orders")){
-			request.setAttribute(ATT_ORDER, os.findAll());
-			this.getServletContext().getRequestDispatcher(VUE_ORDERS).forward(request,response);
-		}else if(request.getServletPath().equals("/order")){
-			OrderForm form=new OrderForm(cs,os);
-			Orders order=form.getOrder(request);
-			if(form.getResult()=="true"){
-				request.setAttribute(Cons.ATT_ORDER, order);
-				this.getServletContext().getRequestDispatcher(VUE_ORDER).forward(request,response);	
-			}
-			else{
+		HttpSession session=request.getSession();
+		String accountType=(String) session.getAttribute("accountType");
+		if(accountType=="client"){
+			Client account=(Client) session.getAttribute("account");
+			if(request.getServletPath().equals("/orders")){
+				request.setAttribute(ATT_ORDERS, os.findByClient(account.getId()));
+				this.getServletContext().getRequestDispatcher(VUE_ORDERS).forward(request,response);
+			}else if(request.getServletPath().equals("/order")){
+				OrderForm form=new OrderForm(cs,os);
+				Orders order=form.getOrder(request);
+				if(form.getResult()=="true"){
+					request.setAttribute(Cons.ATT_ORDER, order);
+					this.getServletContext().getRequestDispatcher(VUE_ORDER).forward(request,response);	
+				}
+				else{
+					response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
+				}
+				
+			}else if(request.getServletPath().equals("/order/confirm")){
+				OrderForm form=new OrderForm(cs,os);
+				Orders order=form.confirmOrder(request);
+				if(form.getResult()=="true"){
+					response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
+				}
+			}else{
 				response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
 			}
 		}
@@ -51,20 +78,24 @@ public class OrderController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session =request.getSession();
-		//Client client=(Client) session.getAttribute("account");
-		Client client=null;
-		if(request.getServletPath().equals("/order/add")){
-			OrderForm form=new OrderForm(cs,os);
-			Orders order=form.addOrder(request,client);
-			if(form.getResult()=="true"){
-				order=os.add(order);
-				
-			}
-			else{
+		String accountType=(String) session.getAttribute("accountType");
+		if(accountType=="client"){
+			Client client=(Client) session.getAttribute("account");
+			if(request.getServletPath().equals("/order/add")){
+				OrderForm form=new OrderForm(cs,os);
+				Orders order=form.addOrder(request,client);
+				if(form.getResult()=="true"){
+					List<OrderProducts> s =order.getOrder_products();
+					for(int i=0;i<s.size();i++){
+						Product p=s.get(i).getProduct();
+						p.setQuantity(p.getQuantity()-s.get(i).getProduct_quantity());
+						ps.update(p);
+					}
+					order=os.add(order);
+				}
 				response.sendRedirect(this.getServletContext().getContextPath()+"/orders");
 			}
 		}
-		
 	}
 
 }

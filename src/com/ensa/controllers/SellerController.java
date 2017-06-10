@@ -80,7 +80,7 @@ public class SellerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		//check if the client is logged 
-		if(session.getAttribute(Name.ACCOUNT) != null && ((String)session.getAttribute(Name.ACCOUNT)).equals("seller") ){
+		if(session.getAttribute(Name.ACCOUNT) != null && ((String)session.getAttribute(Name.ACCOUNT_TYPE)).equals("seller") ){
 			
 			Seller seller = (Seller)session.getAttribute(Name.ACCOUNT);
 			

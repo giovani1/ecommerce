@@ -28,8 +28,8 @@ public class ProductController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String VUE_PRODUCT_REGULAR	= "/WEB-INF/views/product.jsp";
-	public static final String VUE_PRODUCT_ADMIN	= "/WEB-INF/views/productadmin.jsp";
-	public static final String VUE_PRODUCT_SELLER	= "/WEB-INF/views/productseller.jsp";
+	public static final String VUE_PRODUCT_ADMIN	= "/WEB-INF/views/admin/productadmin.jsp";
+	public static final String VUE_PRODUCT_SELLER	= "/WEB-INF/views/seller/productseller.jsp";
 
 	@EJB
     ProductService ps;
