@@ -107,11 +107,13 @@ public class ProductForm extends Form{
 			Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 			try (InputStream input = part.getInputStream()) {
 			    BufferedImage inputImage = ImageIO.read(input);
+
 			    File uploads = new File("C:\\Users\\OkhtoBot\\workspace\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 			    ImageIO.write(inputImage, "jpg", uploads);
 			    System.out.println("----"+uploads.getPath());
 			    //product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
 			    product.setImage("/resources/img/"+uploads.getName());
+
 			}
 			catch (Exception e) {
 				setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
