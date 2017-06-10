@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ensa.forms.ProductForm;
-import com.ensa.forms.ProductForm.source;
 import com.ensa.models.Categorie;
 import com.ensa.models.Product;
 import com.ensa.models.Seller;
@@ -31,8 +30,8 @@ public class ProductsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String VUE_PRODUCTS_REGULAR		= "/WEB-INF/views/products.jsp";
-	public static final String VUE_PRODUCTS_ADMIN		= "/WEB-INF/views/productsadmin.jsp";
-	public static final String VUE_PRODUCTS_SELLER		= "/WEB-INF/views/productsseller.jsp";
+	public static final String VUE_PRODUCTS_ADMIN		= "/WEB-INF/views/admin/productsadmin.jsp";
+	public static final String VUE_PRODUCTS_SELLER		= "/WEB-INF/views/seller/productsseller.jsp";
     
 	@EJB
     ProductService ps;
@@ -44,16 +43,67 @@ public class ProductsController extends HttpServlet {
     Product_attributesService pas;
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session=request.getSession();
+		HttpSession session=request.getSession();
 		List<Product> products=new ArrayList<Product>();
-		//String accountType=(String) session.getAttribute("accountType");
-		String accountType="";
-		ProductForm form=new ProductForm(ps, cs,pos,pas);
+		System.out.println(request.getServletPath());
+		if(request.getServletPath().equals("/s")){
+			ProductForm form=new ProductForm(ps, cs,pos,pas);
+			int id=form.getProducts(request);
+			if(form.getResult()=="true" && id!=-1){
+				products=ps.findBySeller(id);
+				request.setAttribute("type", "sellerPage");
+				request.setAttribute(Cons.ATT_PRODUCTS,products);
+				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
+			}
+			
+		}else if(request.getServletPath().equals("/c")){
+			ProductForm form=new ProductForm(ps, cs,pos,pas);
+			int id=form.getProducts(request);
+			if(form.getResult()=="true" && id!=-1){
+				ArrayList<Categorie> categories=new ArrayList<>();
+				Categorie categorie=cs.find(id);
+				List<Categorie> list=new ArrayList<Categorie>();
+				list.add(categorie);
+				while(categorie!=null){
+					categories.add(categorie);
+					categorie=categorie.getParent();
+				}
+				//get all categories under the target
+
+				for(int i=0;i<list.size();i++){
+					List<Categorie> list1=cs.findByParent(list.get(i).getId());
+					if(list1!=null){
+						list.addAll(list1);
+					}	
+				}
+				for(int i=0;i<list.size();i++){
+					System.out.println(list.get(i).getName());
+					products.addAll(ps.findByCategory(list.get(i).getId()));
+				}
+				request.setAttribute(Cons.ATT_CATEGORIE,categories);
+				request.setAttribute(Cons.ATT_PRODUCTS,products);
+				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
+			}
+			
+		}else if(request.getServletPath().equals("/products")){
+			String accountType=(String) session.getAttribute("accountType");
+			if(accountType=="seller"){
+				Seller seller=(Seller) session.getAttribute("account");
+				products=ps.findBySeller(seller.getId());
+				request.setAttribute(Cons.ATT_PRODUCTS,products);
+				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_SELLER ).forward( request, response );
+			}else if(accountType=="admin"){
+				products=ps.findAll();
+				request.setAttribute(Cons.ATT_PRODUCTS,products);
+				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_ADMIN ).forward( request, response );
+			}
+		}
+		
+		/*ProductForm form=new ProductForm(ps, cs,pos,pas);
 		source s=form.getSource(request);
 		
 		if(s.s=="seller"){
-			//Seller seller=(Seller) session.getAttribute("account");
-			Seller seller=null;
+			Seller seller=(Seller) session.getAttribute("account");
 			if(accountType=="seller"){
 				products=ps.findBySeller(seller.getId());
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
@@ -105,6 +155,6 @@ public class ProductsController extends HttpServlet {
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
 			}
-		}
+		}*/
 	}
 }

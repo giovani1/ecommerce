@@ -36,7 +36,7 @@ public class AddProduct extends HttpServlet {
 	
 
 	private static final String ADD_FORM 		= "/WEB-INF/views/seller/addproduct.jsp";
-	private static final String UPDATE_FORM 	= "/WEB-INF/views/updateproduct.jsp";
+	private static final String UPDATE_FORM 	= "/WEB-INF/views/seller/updateproduct.jsp";
 
     @EJB
     ProductService ps;

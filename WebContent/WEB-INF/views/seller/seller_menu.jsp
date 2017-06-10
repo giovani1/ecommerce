@@ -11,6 +11,6 @@
 		<li class="active"><a href="<c:url value="/seller"/>">Mes informations</a></li>
 		<li><a href="<c:url value="/addresse"/>">Mes adresses</a>
 		<li><a href="#">Mes commandes</a></li>
-		<li><a href="<c:url value="/review"/>">Mes produits</a>
+		<li><a href="<c:url value="/products"/>">Mes produits</a>
 	</ul>
 </div>

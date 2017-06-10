@@ -97,7 +97,7 @@ public final class Validation {
 	public static void validateName(String firstName) throws ValidationException {
 		 if ( firstName != null ) {
 			 firstName = firstName.trim();
-			 if(!firstName.matches("^([a-zA-Z- ]){3,25}$")){
+			 if(!firstName.matches("^([a-zA-Z- ]){3,60}$")){
 				 throw new ValidationException( "Votre nom doit contenir au moins 3 caracteres." );
 			 }
 		 } else {
@@ -109,7 +109,7 @@ public final class Validation {
 	public static void validateText(String adresse_street) throws ValidationException{
 		if ( adresse_street != null ) {
 			adresse_street = adresse_street.trim();
-			 if(!adresse_street.matches("^[A-Za-z0-9'\\.\\-\\s\\,]{5,100}$")){
+			 if(!adresse_street.matches("^[A-Za-z0-9'\\.\\;\\-\\s\\,]{5,10000}$")){
 				 throw new ValidationException( "votre text doit contenir au moins 5 caratere et pas des cartere speciaux" );
 			 }
 		 } else {

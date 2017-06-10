@@ -129,7 +129,7 @@ public class LoginController extends HttpServlet {
 				
 				session.setAttribute(Name.ACCOUNT,sellerFromSS);
 				session.setAttribute(Name.ACCOUNT_TYPE, "seller");
-			
+				System.out.println("--"+session.getAttribute(Name.ACCOUNT_TYPE));
 				
 				request.getSession().setAttribute(Name.ACCOUNT,sellerFromSS);
 				

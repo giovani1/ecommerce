@@ -68,7 +68,7 @@ public class AddCategorie extends HttpServlet {
 					System.out.println("hollllllll");
 					categorie=cs.update(categorie);
 					updateCategories();
-					response.sendRedirect("/categorie");
+					response.sendRedirect(this.getServletContext().getContextPath()+"/categorie");
 				}
 				else{
 					response.sendRedirect(this.getServletContext().getContextPath()+"/categorie/update?"+categorie.getId());

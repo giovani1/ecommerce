@@ -53,7 +53,7 @@
 		          	<c:choose>
 				    	<c:when test="${! empty sessionScope.account}">
 				       		<li><a href="<c:url value="/seller"/>">Profil</a></li>
-				       		<li><a href="#">Products</a></li>
+				       		<li><a href="<c:url value="/products"/>">Products</a></li>
 				            <li role="separator" class="divider"></li>
 				            <li><a href="<c:url value="/Logout"/>">Deconnexion</a></li>
 				    	</c:when>

@@ -10,6 +10,7 @@ import com.ensa.models.Cart;
 import com.ensa.models.Cart_attributes;
 import com.ensa.models.Client;
 import com.ensa.models.Orders;
+import com.ensa.models.Product;
 import com.ensa.models.OrderProducts;
 import com.ensa.models.Order_product_attributes;
 import com.ensa.service.CartService;
@@ -66,8 +67,9 @@ public class OrderForm extends Form{
 		}
 		order.setDelivery_city(delivery_city);
 		order.setClient(client);
-		//order.setLast_modified(new Date());
+		order.setLast_modified(new Date());
 		order.setDate_purchased(new Date());
+		order.setStatus("shipping");
 		OrderProducts e=null;
 		List<Cart_attributes> attributes=null;
 		List<OrderProducts> list2=null;
@@ -117,6 +119,31 @@ public class OrderForm extends Form{
 		}
 		if(errors.isEmpty()){
 			result="true";
+		}
+		else
+			result="false";
+		return order;
+	}
+
+	public Orders confirmOrder(HttpServletRequest request) {
+		String id = request.getParameter("orderid");
+		Orders order=null;
+		try{
+			Validation.validateId(id);
+			order=os.find(Integer.parseInt(id));
+		}catch(Exception e){
+			setError(Cons.ORDER_ID_FIELD,e.getMessage());
+		}
+		if(errors.isEmpty()){
+			result="true";
+			List<OrderProducts> s=order.getOrder_products();
+			for(int i=0;i!=s.size();i++){
+				Product p=s.get(i).getProduct();
+				p.setQuantity(p.getQuantity()-s.get(i).getProduct_quantity());
+			}
+			order.setStatus("delivred");
+			order.setDate_finished(new Date());
+			os.update(order);
 		}
 		else
 			result="false";

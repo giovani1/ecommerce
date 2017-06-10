@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = Orders.FIND_BY_DELIVERY_NAME, query = "SELECT o FROM Orders o WHERE o.delivery_name = :dname"),
+	@NamedQuery(name = Orders.FIND_BY_CLIENT, query = "SELECT o FROM Orders o WHERE o.client.id = :cid"),
     @NamedQuery(name = Orders.FIND_ALL, query = "SELECT o FROM Orders o")
 })
 public class Orders implements Serializable {
@@ -58,6 +59,9 @@ public class Orders implements Serializable {
 
 	public static final String FIND_ALL = "Orders.findAll";
 	public static final String FIND_BY_DELIVERY_NAME = "Orders.findByDeliveryName";
+
+	public static final String FIND_BY_CLIENT = "Orders.findByClient";
+	//public static final String FIND_BY_SELLER = "Orders.findBySeller";
 	/**
 	 * @return the id
 	 */

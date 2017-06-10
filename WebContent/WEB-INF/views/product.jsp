@@ -12,6 +12,7 @@
 	href="<c:url value="/resources/style/bootstrap3.3.7.min.css"/>">
 <link rel="stylesheet"
 	href="<c:url value="/resources/style/footer.css"/>" />
+	<link rel="stylesheet" href="<c:url value="/resources/style/rating-svg.css"/>" />
 <style type="text/css">
 .validationError {
 	color: #a50616;
@@ -19,71 +20,32 @@
 	text-align: justify;
 	font-size: 10px;
 }
+.classBar{
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+}
+	
+.classBar	li {
+	    float: left;
+	}
+	
+}
 </style>
 </head>
 
 <body>
-	<!--<style type="text/css">
-    	.carousel-inner > .item > img,
-	  	.carousel-inner > .item > a > img {
-	      width: 30%;
-	      margin: auto;
-	  	}
-    	col-centered{
-		    float: none;
-		    margin: 0 auto;
-		}
-
-
-		.footer-bs {
-		    background-color: #101010;
-			padding: 60px 40px;
-			color: rgba(255,255,255,1.00);
-		}
-		.footer-bs .footer-brand, .footer-bs .footer-nav, .footer-bs .footer-social, .footer-bs .footer-ns { padding:10px 25px; }
-		.footer-bs .footer-nav, .footer-bs .footer-social, .footer-bs .footer-ns { border-color: transparent; }
-		.footer-bs .footer-brand h2 { margin:0px 0px 10px; }
-		.footer-bs .footer-brand p { font-size:12px; color:rgba(255,255,255,0.70); }
-
-		
-
-		.footer-bs .footer-nav ul.list { list-style:none; padding:0px; }
-		.footer-bs .footer-nav ul.list li { padding:5px 0px;}
-		.footer-bs .footer-nav ul.list a { color:rgba(255,255,255,0.80); }
-		.footer-bs .footer-nav ul.list a:hover { color:rgba(255,255,255,0.60); text-decoration:none; }
-
-		.footer-bs .footer-social ul { list-style:none; padding:0px; }
-		.footer-bs .footer-social h4 {
-			font-size: 11px;
-			text-transform: uppercase;
-			letter-spacing: 3px;
-		}
-		.footer-bs .footer-social li { padding:5px 4px;}
-		.footer-bs .footer-social a { color:rgba(255,255,255,1.00);}
-		.footer-bs .footer-social a:hover { color:rgba(255,255,255,0.80); text-decoration:none; }
-
-		.footer-bs .footer-ns h4 {
-			font-size: 11px;
-			text-transform: uppercase;
-			letter-spacing: 3px;
-			margin-bottom:10px;
-		}
-		.footer-bs .footer-ns p { font-size:12px; color:rgba(255,255,255,0.70); }
-
-		@media (min-width: 768px) {
-			.footer-bs .footer-nav, .footer-bs .footer-social, .footer-bs .footer-ns { border-left:solid 1px rgba(255,255,255,0.10); }
-		}
-
-
-		
-    </style>-->
 
 	<c:import url="header.jsp" />
 	<div class="container-fluid">
+		<ul class="catBar">
 		<c:forEach items="${ requestScope.categorie }" var="categorie"
 			varStatus="boucle">
-			<span>${ categorie.getName() }</span>
+			<li><span>${ categorie.getName() }</span></li>
 		</c:forEach>
+		</ul>
+		<div class="col-md-12">
+			
 		<h3>${ product.getName() }</h3>
 		<!-- <h6><a href="/product?seller_name=${ product.getSeller().getName() }"></a></h6> -->
 		<form action='<c:url value="/cart/add"/>' method="POST">
@@ -100,16 +62,12 @@
 						<div class="col-sm-8">
 							<div>
 								<div class="row">
-									<div class="col-md-4" id="star-rating">
-										<input type="radio" name="example" class="rating" value="1" />
-										<input type="radio" name="example" class="rating" value="2" />
-										<input type="radio" name="example" class="rating" value="3" />
-										<input type="radio" name="example" class="rating" value="4" />
-										<input type="radio" name="example" class="rating" value="5" />
+									<div class="col-md-4">
+										<div   id="rating_product"></div>		  
 									</div>
 									<div class="col-md-8">
 										<a href="#"><span class="glyphicon glyphicon-user">
-										</span> 8664 commentaires client</a>
+										</span> ${ product.getReviews().size()} commentaires client</a>
 									</div>
 								</div>
 							</div>
@@ -163,10 +121,108 @@
 			</div>
 		</form>
 	</div>
+	<div>
+		<c:if test="${! empty product.getReviews() }" >
+			<h4>Commentaires</h4>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th></th>
+						<th colspan="3"></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${product.getReviews() }" var="review">
+						<tr>
+							<td>
+								<div   id="rating_${review.getId()}"></div>		    
+							</td>
+							<td colspan="2">${review.getText() }</td>
+							<td>crée par <a href=""> ${review.getClient().getPerson().getFirstname() }</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:if>
+	</div>
+	<hr/>
+	<div  style="background : #545760 ; color : #ffffff ;padding : 15px">
+         <h4>Ajouter Commentaire</h4>
+         <hr/>
+         <form class="form-horizontal" method="Post" action="<c:url value="/review/add?id=${product.getId() }"/>">
+
+       <!--rating -->
+       <div class="form-group">
+         <label for="rating" class="col-sm-2 control-label">rating :</label>
+         <div class="col-sm-4">
+          <div   id="newrating"></div>
+          <input type="number" style="visibility:hidden"  step="0.5"  name="rating" id="ratingValue" value="<c:out value="${review.getRating()}"/>"/>
+         </div>
+         <label class="validationError" ><c:out value='${form.getErrors().get("rating")}'/></label>
+       </div>
+       
+
+	<!-- comment -->
+		<div class="form-group">
+         <label for="comment" class="col-sm-2 control-label">Commentaire :</label>
+         <div class="col-md-10">
+           <textarea class="form-control" name="comment" id="comment" placeholder="votre commentaire ..."><c:out value="${review.getText()}"/></textarea>
+         </div>
+         <label class="validationError" ><c:out value='${form.getErrors().get("comment")}'/></label>
+      	</div>
+       
+       
+       <div class="form-group">
+         <div class="col-sm-offset-2 col-sm-10">
+           <button type="submit" class="btn btn-success">Ajouter Commentaire</button>
+         </div>
+       </div>
+     
+			</form>
+   		
+   	</div>
+   	<div style="height:100px"></div>
+	</div>
 	<c:import url="footer.jsp" />
 
 	<script src="<c:url value="/resources/js/jquery1.12.4.min.js"/>"></script>
 	<script src="<c:url value="/resources/js/bootstrap3.3.7.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/rating-svg.js"/>"></script>
+			<script>
+				$("#rating_product").starRating({
+					initialRating: '5',
+					strokeColor: '#894A00',
+				    readOnly: true,
+				    starSize: 35,
+					strokeWidth: 2
+				})	    
+			
+				$("#newrating").starRating({
+				    initialRating: '<c:out value="${review.getRating()}"/>',
+				    starSize: 35,
+					strokeWidth: 2,
+				    disableAfterRate: false,
+				    onHover: function(currentIndex, currentRating, $el){
+				      $('#ratingValue').val(currentIndex);
+				    },
+				    onLeave: function(currentIndex, currentRating, $el){
+				      $('#ratingValue').val(currentRating);
+				    }
+				 });
+				 
+		<c:forEach items="${product.getReviews() }" var="review">
+				
+				$("#rating_${review.getId()}").starRating({
+					initialRating: '<c:out value="${review.getRating()}"/>',
+					strokeColor: '#894A00',
+				    readOnly: true,
+				    starSize: 35,
+					strokeWidth: 2
+				})	    
+			
+		</c:forEach>  
+		</script>
 </body>
 </html>
 

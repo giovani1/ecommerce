@@ -30,6 +30,8 @@
         	<ul>
             	<li><a href="#">Facebook</a></li>
             	<li><a href="#">Twitter</a></li>
+            	<li><a href="<c:url value="/admin"/>">Administrator</a></li>
+            	<li><a href="<c:url value="/Logout"/>">LogOut</a></li>
             </ul>
         </div>
     </div>
