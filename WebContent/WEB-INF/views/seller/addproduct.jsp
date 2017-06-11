@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
 	href="<c:url value="/resources/style/bootstrap3.3.7.min.css"/>">
 <link rel="stylesheet"
 	href="<c:url value="/resources/style/footer.css"/>" />
+	<link rel="stylesheet" href="<c:url value="/resources/style/jquery-ui1.12.1.min.css"/>">
 <style type="text/css">
 .validationError {
 	color: #a50616;
@@ -142,7 +144,7 @@
 					<label class="control-label" for="date_available">le date de diponibilite du
 						produit <span class="requis">*</span>
 					</label> <input class="form-control" type="date" id="date_available" name="date_available"
-						value="<c:out value="${ product.getDate_available() }"></c:out>" />
+						value="<fmt:formatDate value="${ product.getDate_available() }" pattern="yyyy-MM-dd" />" />
 					<span class="erreur">${form.errors['date_available']}</span>
 				</div>
 				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter</button>  
@@ -155,6 +157,13 @@
 	<c:import url="../footer.jsp" />
 
 	<script src="<c:url value="/resources/js/jquery1.12.4.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-ui1.12.1.min.js"/>"></script>
 	<script src="<c:url value="/resources/js/bootstrap3.3.7.min.js"/>"></script>
+	<script type="text/javascript">
+		$( "#date_available" ).datepicker({
+				 dateFormat: 'yy-mm-dd'	
+			});
+		
+	</script>
 </body>
 </html>

@@ -15,15 +15,15 @@ import javax.servlet.http.HttpSession;
 import com.ensa.util.Name;
 
 /**
- * Servlet Filter implementation class clientFilter
+ * Servlet Filter implementation class AdminAndSellerFilter
  */
-@WebFilter({"/cart/*","/review/add","/review/update","/client/update"})
-public class clientFilter implements Filter {
+@WebFilter({"/product/*","/products"})
+public class AdminAndSellerFilter implements Filter {
 
     /**
      * Default constructor. 
      */
-    public clientFilter() {
+    public AdminAndSellerFilter() {
         // TODO Auto-generated constructor stub
     }
 
@@ -40,10 +40,10 @@ public class clientFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest requestH = ((HttpServletRequest)request);
 		HttpSession session = requestH.getSession();
-		if(session.getAttribute(Name.ACCOUNT_TYPE) != null && ((String)session.getAttribute(Name.ACCOUNT_TYPE)).equals("client") ){ 
+		if(session.getAttribute(Name.ACCOUNT_TYPE) != null && (((String)session.getAttribute(Name.ACCOUNT_TYPE)).equals("admin") || ((String)session.getAttribute(Name.ACCOUNT_TYPE)).equals("seller") )){ 
 			chain.doFilter(request, response);
 		} else {
-		      ((HttpServletResponse)response).sendRedirect(requestH.getServletContext().getContextPath()+"/login/client");
+		      ((HttpServletResponse)response).sendRedirect(requestH.getServletContext().getContextPath()+"/Home");
 		}
 	}
 

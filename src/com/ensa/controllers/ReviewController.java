@@ -97,7 +97,7 @@ public class ReviewController extends HttpServlet {
  			rs.addReviewToProduct(review.getId(), productId);
 			//add review to product;
 			//last seen here
-			response.sendRedirect(this.getServletContext().getContextPath()+Name.REVIEWS);	
+			response.sendRedirect(this.getServletContext().getContextPath()+"/p/"+productId+"_s");	
 		}else{
 			
 			request.setAttribute(Name.FORM, form);

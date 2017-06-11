@@ -33,7 +33,7 @@ public class ProductForm extends Form{
 	private Product_optionsService pos;
 	private Product_attributesService pas;
 	
-	private Pattern reg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
+	private Pattern reg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-0-9_]+)$");
 	private Pattern reg1 = Pattern.compile("^(option_)([0-9]+)$");
 	//private Pattern sreg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
 	//private Pattern creg = Pattern.compile("^(\\/)([0-9]+)(_)([a-zA-Z-_]+)$");
@@ -101,17 +101,14 @@ public class ProductForm extends Form{
 			result="false";
 		return product;
 	}
-	public Product addProduct1(HttpServletRequest request,Product product) 
-	{
+	public Product addProduct1(HttpServletRequest request,Product product) {
 		try{
 			Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 			try (InputStream input = part.getInputStream()) {
 			    BufferedImage inputImage = ImageIO.read(input);
-			    File uploads = new File("C:\\Users\\OkhtoBot\\workspace\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
+			    File uploads = new File("C:\\webapps\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 			    ImageIO.write(inputImage, "jpg", uploads);
-			    System.out.println("----"+uploads.getPath());
-			    //product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
-			    product.setImage("/resources/img/"+uploads.getName());
+			    product.setImage(request.getContextPath()+"/img/"+uploads.getName());
 			}
 			catch (Exception e) {
 				setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
@@ -181,7 +178,7 @@ public class ProductForm extends Form{
 		product.setLast_modified(new Date());
 		
 		try{
-			Validation.validateText(name);
+			Validation.validateName(name);
 		} catch(Exception e){
 			System.out.println("name"+e.getMessage());
 			setError(Cons.PRODUCT_NAME_FIELD,e.getMessage());
@@ -251,7 +248,7 @@ public class ProductForm extends Form{
 				throw new Exception("Valeur date incorrecte.");
 			}
 		}else{
-			throw new Exception("Format date ill�gale.");
+			throw new Exception("Format date ill?gale.");
 		}
 		
 		return dateV;
@@ -269,26 +266,20 @@ public class ProductForm extends Form{
 		try{
 			Validation.validateId(id);
 			product=ps.find(Integer.parseInt(id));
-
+			
 			try{
-				
-				
 				Part part=request.getPart(Cons.PRODUCT_IMAGE_FIELD);
 				try (InputStream input = part.getInputStream()) {
 				    BufferedImage inputImage = ImageIO.read(input);
-				    File uploads = new File("C:\\Users\\OkhtoBot\\workspace\\ec1\\WebContent\\resources\\img\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
+				    File uploads = new File(request.getServletContext().getRealPath("/resources/img/")+"\\"+product.getId()+"_"+product.getDate_added().getTime()+".jpg");
 				    ImageIO.write(inputImage, "jpg", uploads);
-				    System.out.println("-------- "+uploads.getAbsolutePath());
-				    product.setImage(uploads.getAbsolutePath());
-				    
+				    product.setImage(request.getContextPath()+"/resources/img/"+uploads.getName());
 				}
 				catch (Exception e) {
 					setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
-					e.printStackTrace();
 				}
 			} catch (Exception e) {
 				setError(Cons.PRODUCT_IMAGE_FIELD,e.getMessage());
-				e.printStackTrace();
 			}
 			
 			try{

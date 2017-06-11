@@ -21,6 +21,7 @@
 	font-size: 10px;
 }
 .classBar{
+	
 	    list-style-type: none;
 	    margin: 0;
 	    padding: 0;
@@ -28,6 +29,8 @@
 	
 .classBar	li {
 	    float: left;
+	    padding-top : 40px;
+	    padding-bottom : 10px;
 	}
 	
 }
@@ -37,17 +40,20 @@
 <body>
 
 	<c:import url="header.jsp" />
+	
 	<div class="container-fluid">
-		<ul class="catBar">
+		<div style="height:20px"></div>
+		<ol class="breadcrumb">
 		<c:forEach items="${ requestScope.categorie }" var="categorie"
 			varStatus="boucle">
-			<li><span>${ categorie.getName() }</span></li>
+			<li><span><a href="<c:url value="/c/${categorie.getId()}_${categorie.getName() }"/>" >${ categorie.getName() }</a></span></li>
 		</c:forEach>
-		</ul>
+		</ol>
+		<div class="row">
 		<div class="col-md-12">
 			
 		<h3>${ product.getName() }</h3>
-		<!-- <h6><a href="/product?seller_name=${ product.getSeller().getName() }"></a></h6> -->
+		
 		<form action='<c:url value="/cart/add"/>' method="POST">
 			<input type="hidden" name="product_id" value="${ product.getId() }" />
 			<div class="row">
@@ -56,7 +62,7 @@
 					<hr />
 					<div class="row">
 						<div class="col-sm-4">
-							<img alt="${ product.getName() }" src="${ product.getImage() }">
+							<img class="img-responsive"  alt="${ product.getName() }" src="${ product.getImage() }">
 							<hr />
 						</div>
 						<div class="col-sm-8">
@@ -67,7 +73,7 @@
 									</div>
 									<div class="col-md-8">
 										<a href="#"><span class="glyphicon glyphicon-user">
-										</span> ${ product.getReviews().size()} commentaires client</a>
+										</span> ${ product.getReviews().size() - nbFalse} commentaires client</a>
 									</div>
 								</div>
 							</div>
@@ -122,6 +128,7 @@
 		</form>
 	</div>
 	<div>
+		<div class="col-md-12">
 		<c:if test="${! empty product.getReviews() }" >
 			<h4>Commentaires</h4>
 			<table class="table table-hover">
@@ -134,17 +141,21 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${product.getReviews() }" var="review">
-						<tr>
-							<td>
-								<div   id="rating_${review.getId()}"></div>		    
-							</td>
-							<td colspan="2">${review.getText() }</td>
-							<td>crée par <a href=""> ${review.getClient().getPerson().getFirstname() }</a></td>
-						</tr>
+						<c:if test="${ review.getStatus() eq true }">
+							<tr>
+								<td>
+									<div   id="rating_${review.getId()}"></div>		    
+								</td>
+								<td colspan="2">${review.getText() }</td>
+								<td>crée par <a href=""> ${review.getClient().getPerson().getFirstname() }</a></td>
+							</tr>
+						</c:if>
 					</c:forEach>
 				</tbody>
 			</table>
 		</c:if>
+	</div>
+	</div>
 	</div>
 	<hr/>
 	<div  style="background : #545760 ; color : #ffffff ;padding : 15px">
@@ -191,7 +202,7 @@
 	<script src="<c:url value="/resources/js/rating-svg.js"/>"></script>
 			<script>
 				$("#rating_product").starRating({
-					initialRating: '5',
+					initialRating: ${ratio},
 					strokeColor: '#894A00',
 				    readOnly: true,
 				    starSize: 35,

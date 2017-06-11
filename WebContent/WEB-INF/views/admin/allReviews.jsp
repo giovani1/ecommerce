@@ -49,7 +49,7 @@
 									<div   id="rating_${review.getId()}"></div>	
 								</td>
 								<td>
-									<a href="<c:url value="/"/>">Product PATH</a>
+									<a href="<c:url value="/p/${ review.getProduct().getUrl() }"/>">${ review.getProduct().getName() }</a>
 								</td>
 								<td>
 									<form action='<c:url value="AllReviews/switch_status"/>' method="post">

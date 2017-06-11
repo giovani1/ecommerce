@@ -2,6 +2,7 @@ package com.ensa.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -51,8 +52,8 @@ public class ProductsController extends HttpServlet {
 			int id=form.getProducts(request);
 			if(form.getResult()=="true" && id!=-1){
 				products=ps.findBySeller(id);
-				request.setAttribute("type", "sellerPage");
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
+				request.setAttribute("sellerOf",products.get(0).getSeller());
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
 			}
 			
@@ -68,6 +69,7 @@ public class ProductsController extends HttpServlet {
 					categories.add(categorie);
 					categorie=categorie.getParent();
 				}
+				Collections.reverse(categories);
 				//get all categories under the target
 
 				for(int i=0;i<list.size();i++){
