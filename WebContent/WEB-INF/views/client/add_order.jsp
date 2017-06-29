@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>| Accueil</title>
+<title>commande</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,8 +24,8 @@
 
 <body>
 	<c:import url="../header.jsp" />
-	<div class="container">
-		<hr />
+	<div class="container-fluid">
+	<hr />
 	<div class="col-md-10">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -39,9 +39,7 @@
 					<th>le produit</th>
 					<th>prix unitaire</th>
 					<th>Quantité</th>
-					<th>modifer</th>
 					<th>total</th>
-					<th>Supprimer</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,48 +54,49 @@
 					</c:forEach>
 					</td>
 					<td>${ carts.getProduct().getPrice() }</td>
-					<form action='<c:url value="cart/update"/>' method="post">
-						
-						<input type="hidden" name="cart_id"
-							value="${ carts.getId() }" />
-						<td>
-						<div class="form-group">
-						<input type="number" name="quantity" class="form-control"
-							value="${ carts.getCart_quantity() }" />
-						</div>
-						</td>
-						<td>
-						<div class="form-group">
-						<button type="submit" class="btn btn-primary">modifier la quantite</button>
-						</div>
-						</td>
-					</form>
+					<td>${ carts.getCart_quantity() }</td>
 					<td>${ carts.getFinal_price() }</td>
-					<td>
-					<form action='<c:url value="cart/delete"/>' method="post">
-						<input type="hidden" name="cart_id"
-							value="${ carts.getId() }" />
-							<div class="form-group">
-							<button type="submit" class="btn btn-danger">supprimer</button>
-							</div>
-					</form>
-					</td>
 				</tr>
 				</c:forEach>
 			</tbody>
 			</table>
-			<c:if test="${! empty cart }">
-			<form action='<c:url value="/order/add/1"/>' method="post">
-				<input type="submit" class="btn btn-primary" value="passer commander"/>
-			</form>
-			</c:if>
 		</div>
 	</div>
 	</div>
+	<form method="POST" action='<c:url value="/order/add/2"/>' >
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Choisir l'adresse de destination</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<select name="delivery_adress" class="form-control">
+						<option value="">«Sélectionnez»</option>
+						<c:forEach items="${client.getPerson().getAdresses()}"
+							var="addresse" varStatus="boucle">
+							<option value="${ addresse.getId() }">${ addresse.getCity() } ${ addresse.getAdress() } ${addresse.getZipCode() } </option>
+						</c:forEach>
+					</select> <span class="erreur">${form.errors['adresse_id']}</span>
+				</div>
+			</div>
 		</div>
-		<div style="height : 300px"></div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Inserer les informations de livraison</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="control-label" for="name">le nom de destinataire<span class="requis">*</span></label> <input
+						type="text" id="name" name="delivery_name" class="form-control"
+						value="<c:out value="${ product.getName() }"></c:out>" size="30"
+						maxlength="30" /> <span class="erreur">${form.errors['delivery_name']}</span>
+				</div>
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajouter</button>  
+			</div>
+		</div>
+	</form>
 	</div>
-	
+	</div>
 	<c:import url="../footer.jsp" />
 
 	<script src="<c:url value="/resources/js/jquery1.12.4.min.js"/>"></script>

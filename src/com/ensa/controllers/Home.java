@@ -43,8 +43,10 @@ public class Home extends HttpServlet {
 		
 		
 		List<Product> products = ps.findAll();
+		List<Categorie> categories = cs.findByParent(1);
 		Collections.reverse(products);
 		request.setAttribute("products",products);
+		request.setAttribute("categories",categories);
 		this.getServletContext().getRequestDispatcher(HOME).forward(request,response);
 	
 		

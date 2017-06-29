@@ -43,8 +43,28 @@
 
 <body>
 	<c:import url="header.jsp" />
-	<div class="container">
-	
+	<div class="container-fluid">
+	 <c:if test="${ ! empty categories }">
+		<div class="col-sm-3 col-md-2 sidebar">
+          <h4>Catégories</h4>
+	          <ul class="nav nav-sidebar">
+	          	<c:forEach items="${requestScope.categories }" var="categorie">
+		            <li><a href="<c:url value="/c/${categorie.getId()}_${categorie.getName() }"/>" >${categorie.getName()  }</a></li>
+	            </c:forEach>
+	          </ul>
+        </div>
+     </c:if>
+     <c:if test="${ ! empty sellers }">
+		<div class="col-sm-3 col-md-2 sidebar">
+          <h4>Vendeurs</h4>
+	          <ul class="nav nav-sidebar">
+	          	<c:forEach items="${requestScope.sellers }" var="seller">
+		            <li><a href="<c:url value="/s/${ seller.getId() }_${seller.getSeller_name() }"/>">${seller.getSeller_name() }</a></li>
+	            </c:forEach>
+	          </ul>
+        </div>
+     </c:if>
+        <div class="col-sm-9 col-md-10 ">
 		<div class="row" >
 			<c:if test="${ !empty categorie }">
 			<div style="height:20px"></div>
@@ -56,9 +76,9 @@
 			</c:if>
 			<c:if test="${ !empty sellerOf }">
 				<h2><a href="<c:url value="/s/${ sellerOf.getId() }_${sellerOf.getSeller_name() }"/>">${sellerOf.getSeller_name() }</a></h2>
-			</c:if>
-			
+			</c:if>			
 		</div>
+		
       	<div class="row">
       	
 	       <table>
@@ -92,9 +112,12 @@
         	</c:forEach>
         	</tbody>
         	</table>
-	      </div>
-	<div style="height:100px"></div>
-		</div>
+	   </div>
+	   
+	   <div style="height:100px"></div>
+	   </div>
+		
+	</div>
     
 	<c:import url="footer.jsp" />
 

@@ -21,6 +21,7 @@ import com.ensa.service.CategorieService;
 import com.ensa.service.ProductService;
 import com.ensa.service.Product_attributesService;
 import com.ensa.service.Product_optionsService;
+import com.ensa.service.SellerService;
 import com.ensa.util.Cons;
 
 /**
@@ -34,6 +35,8 @@ public class ProductsController extends HttpServlet {
 	public static final String VUE_PRODUCTS_ADMIN		= "/WEB-INF/views/admin/productsadmin.jsp";
 	public static final String VUE_PRODUCTS_SELLER		= "/WEB-INF/views/seller/productsseller.jsp";
     
+	@EJB
+	SellerService ss;
 	@EJB
     ProductService ps;
     @EJB
@@ -52,6 +55,7 @@ public class ProductsController extends HttpServlet {
 			int id=form.getProducts(request);
 			if(form.getResult()=="true" && id!=-1){
 				products=ps.findBySeller(id);
+				request.setAttribute("sellers",((List<Seller>)ss.getAllSellers()));
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
 				request.setAttribute("sellerOf",products.get(0).getSeller());
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
@@ -63,6 +67,7 @@ public class ProductsController extends HttpServlet {
 			if(form.getResult()=="true" && id!=-1){
 				ArrayList<Categorie> categories=new ArrayList<>();
 				Categorie categorie=cs.find(id);
+				List<Categorie> categoriess = cs.findByParent(id);
 				List<Categorie> list=new ArrayList<Categorie>();
 				list.add(categorie);
 				while(categorie!=null){
@@ -83,6 +88,7 @@ public class ProductsController extends HttpServlet {
 					products.addAll(ps.findByCategory(list.get(i).getId()));
 				}
 				request.setAttribute(Cons.ATT_CATEGORIE,categories);
+				request.setAttribute("categories",categoriess);
 				request.setAttribute(Cons.ATT_PRODUCTS,products);
 				this.getServletContext().getRequestDispatcher( VUE_PRODUCTS_REGULAR ).forward( request, response );
 			}

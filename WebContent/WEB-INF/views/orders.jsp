@@ -38,17 +38,21 @@
 	<thead>
 		<tr>
 			<th>order</th>
+			<th>Date d'achat</th>
 			<th>Statut de la commande</th>
-			<th>Action de la commande</th>
+			<th></th>
 		</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${requestScope.order}" var="order"
+		<c:forEach items="${requestScope.orders}" var="order"
 			varStatus="boucle">
 			<tr>
-				<td><a src='<c:url value="/order?id= ${ order.getId() }"/>'></a></td>
+				<td><a href='<c:url value="/order?id=${order.getId() }"/>'>Commande</a></td>
 				<td><span>${ order.getDate_purchased() }</span></td>
-				<td>${ order.getOrders_status() }</td>
+				<td>${ order.getStatus() }</td>
+				<c:if test="${ !order.getStatus().equals('delivred') }">
+				<td><a class="btn btn-primary" href='<c:url value="/order/confirm?id=${order.getId() }"/>'>Confirmer la réception</a></td>
+				</c:if>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -10,7 +10,7 @@
 	<ul class="nav nav-sidebar">
 		<li class="active"><a href="<c:url value="/client"/>">Mes informations</a></li>
 		<li><a href="<c:url value="/addresse"/>">Mes adresses</a>
-		<li><a href="#">Mes commandes</a></li>
+		<li><a href="<c:url value="/orders"/>">Mes commandes</a></li>
 		<li><a href="<c:url value="/review"/>">Mes commentaires</a>
 	</ul>
 </div>

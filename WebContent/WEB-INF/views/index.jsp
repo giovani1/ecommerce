@@ -74,36 +74,13 @@
       
         <div class="col-sm-3 col-md-2 sidebar">
           <h3>Catégories</h3>
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Hi-Tec</a></li>
-            <li><a href="#">Vehicules</a></li>
-            <li><a href="#">Immeubles</a></li>
-            <li><a href="#">Misc</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">Dropdown heading</li>
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i> Dropdown <span class="caret"></span></a>
-	              <ul class="dropdown-menu" role="menu">
-	                <li class="dropdown-header">Dropdown heading</li>
-	                <li><a href="#">Action</a></li>
-	                <li><a href="#">Another action</a></li>
-	                <li><a href="#">Something else here</a></li>
-	                <li><a href="#">Separated link</a></li>
-	                <li><a href="#">One more separated link</a></li>
-	              </ul>
-	            </li>
-            </li>
-                </li>
-              </ul>
-            </li>
-            
-          </ul>
+          <c:if test="${ ! empty categories }">
+	          <ul class="nav nav-sidebar">
+	          	<c:forEach items="${requestScope.categories }" var="categorie">
+		            <li><a href="<c:url value="/c/${categorie.getId()}_${categorie.getName() }"/>" >${categorie.getName()  }</a></li>
+	            </c:forEach>
+	          </ul>
+          </c:if>
         </div>
         <div class="col-sm-9 col-md-10  main" style="border-left: 1px #ddd solid">
         	<h3>Nouveaux Produits</h3>

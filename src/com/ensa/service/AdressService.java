@@ -31,6 +31,7 @@ public class AdressService {
     }
 
     public Adresse getAdresse(int id){
+    	System.out.println("from the service"+id);
     	return em.find(Adresse.class,id);
     }
     
