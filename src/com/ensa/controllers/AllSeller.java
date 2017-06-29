@@ -1,6 +1,7 @@
 package com.ensa.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -32,6 +33,9 @@ public class AllSeller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Seller> sellers= ss.getAllSellers();
 		System.out.println(sellers.size());
+		if(sellers.isEmpty()){
+			sellers = new ArrayList<Seller>();
+		}
 		request.setAttribute("sellers",sellers);
 		this.getServletContext().getRequestDispatcher(ALL_SELLERS).forward(request, response);
 	}

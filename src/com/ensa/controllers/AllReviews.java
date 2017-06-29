@@ -1,6 +1,7 @@
 package com.ensa.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -41,7 +42,10 @@ public class AllReviews extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Review> reviews= rs.getAllReviews();
 		System.out.println("SIZE -------------- "+reviews.size());
-		System.out.println(""+ reviews.get(0).getClient().getPerson().getFirstname());
+		//System.out.println(""+ reviews.get(0).getClient().getPerson().getFirstname());
+		if(reviews.isEmpty()){
+			reviews = new ArrayList<Review>();
+		}
 		request.setAttribute("reviews",reviews);
 		this.getServletContext().getRequestDispatcher(ALL_REVIEWS).forward(request, response);
 	}

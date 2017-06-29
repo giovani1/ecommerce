@@ -27,14 +27,23 @@
 		        </div>
 	         </form>
 	        <c:if test="${(sessionScope.accountType eq 'client') or (empty sessionScope.account ) }">
-	            <li><a href="<c:url value="/cart"/>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"><span class="label label-primary">${sessionScope.cart.getCart_quantity()}</span></span></a></li>
+	            <li><a href="<c:url value="/cart"/>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><span style="margin-left : 2px" class="label label-primary">
+	            <c:choose>
+			    	<c:when test="${! empty sessionScope.numbercart}">
+			       		${ numbercart }
+			    	</c:when>
+			    	<c:otherwise>
+			        	0
+			    	</c:otherwise>
+				 </c:choose>
+	            </span></a></li>
 	            <li class="dropdown">
 	              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
 		          <ul class="dropdown-menu">
 		          	<c:choose>
 				    	<c:when test="${! empty sessionScope.account}">
 				       		<li><a href="<c:url value="/client"/>">Profil</a></li>
-				       		<li><a href="#">Commandes</a></li>
+				       		<li><a href="<c:url value="/orders"/>">Commandes</a></li>
 				            <li role="separator" class="divider"></li>
 				            <li><a href="<c:url value="/Logout"/>">Deconnexion</a></li>
 				    	</c:when>

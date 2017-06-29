@@ -68,6 +68,7 @@ public class CategorieForm extends Form{
 		
 		try{
 			Validation.validateName(name);
+			name = name.replace(" ","_").trim();
 		} catch(Exception e){
 			setError(Cons.CATEGORIE_NAME_FIELD,e.getMessage());
 		}
@@ -114,7 +115,7 @@ public class CategorieForm extends Form{
 	}
 	
 	public Categorie updateCategorie(HttpServletRequest request){
-		String name = getValue(request,Cons.CATEGORIE_NAME_FIELD);
+		String name = getValue(request,Cons.CATEGORIE_NAME_FIELD).replace(' ','_');
 		String parent_id = getValue(request,Cons.CATEGORIE_PARENT_ID_FIELD);
 		String id=getValue(request,Cons.CATEGORIE_ID_FIELD);
 		Categorie categorie=null;

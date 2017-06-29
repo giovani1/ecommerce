@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.ensa.forms.LoginForm;
 import com.ensa.models.Client;
 import com.ensa.models.Seller;
+import com.ensa.service.CartService;
 import com.ensa.service.ClientService;
 import com.ensa.service.SellerService;
 import com.ensa.util.Name;
@@ -31,6 +32,8 @@ public class LoginController extends HttpServlet {
     ClientService cs;
     @EJB
     SellerService ss;
+    @EJB
+    CartService cc;
     
     public LoginController() {
         super();
@@ -93,7 +96,7 @@ public class LoginController extends HttpServlet {
 				
 				session.setAttribute(Name.ACCOUNT,clientFromCS);
 				session.setAttribute(Name.ACCOUNT_TYPE, "client");
-	
+				session.setAttribute(Name.SIZE_OF_CART,cc.findByClient(((Client)request.getSession().getAttribute(Name.ACCOUNT)).getId()).size());
 			
 				response.sendRedirect(this.getServletContext().getContextPath()+Name.HOME);
 				

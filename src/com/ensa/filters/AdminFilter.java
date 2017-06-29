@@ -17,7 +17,7 @@ import com.ensa.util.Name;
 /**
  * Servlet Filter implementation class AdminFilter
  */
-@WebFilter({"/categorie/all","/AllClients","/AllSellers","/AllReviews","/options","/categorie"})
+@WebFilter({"/categorie/all","/AllClients/*","/AllSellers/*","/AllReviews/*","/options/*","/categorie/*"})
 public class AdminFilter implements Filter {
 
     /**

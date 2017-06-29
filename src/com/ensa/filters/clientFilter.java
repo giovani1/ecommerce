@@ -17,7 +17,7 @@ import com.ensa.util.Name;
 /**
  * Servlet Filter implementation class clientFilter
  */
-@WebFilter({"/cart/*","/review/add","/review/update"})
+@WebFilter({"/cart/*","/review/add","/review/update","/client/update","/orders","/order/*"})
 public class clientFilter implements Filter {
 
     /**

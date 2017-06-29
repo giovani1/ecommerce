@@ -24,36 +24,42 @@
 
 <body>
 	<c:import url="header.jsp" />
+	<h3>Information</h3>
+	<hr/>
 	<table class="table table-striped table-hover">
-
 		<tr>
 			<td>le nom de destinataire</td>
-			<td>${ order.getDelivery_name() }"</td>
+			<td>${ order.getDelivery_name() }</td>
 		</tr>
 		<tr>
 			<td>l'adresse de destinataire</td>
-			<td>${ order.getDelivery_adress() }"</td>
+			<td>${ order.getDelivery_adress() }</td>
 		</tr>
 		<tr>
 			<td>zipcode</td>
-			<td>${ order.getDelivery_zipCode() }"</td>
+			<td>${ order.getDelivery_zipCode() }</td>
 		</tr>
 		<tr>
 			<td>city</td>
-			<td>${ order.getDelivery_city() }"</td>
+			<td>${ order.getDelivery_city() }</td>
 		</tr>
 		<tr>
 			<td>date d'achat</td>
-			<td>${ order.getDate_purchased() }"</td>
+			<td>${ order.getDate_purchased() }</td>
 		</tr>
 		<tr>
 			<td>date de reception</td>
-			<td>${ order.getDate_finished() }"</td>
+			<td>${ order.getDate_finished() }</td>
 		</tr>
 		<tr>
 			<td>status</td>
-			<td>${ order.getStatus() }"</td>
+			<td>${ order.getStatus() }</td>
 		</tr>
+	</table>
+	
+	<h3>Produits</h3>
+	<hr/>
+	<table class="table table-striped table-hover">
 		<tr>
 			<c:forEach items="${ order.getOrder_products() }" var="product"
 				varStatus="boucle">

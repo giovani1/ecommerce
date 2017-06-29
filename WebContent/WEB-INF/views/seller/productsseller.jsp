@@ -47,7 +47,7 @@
 							varStatus="boucle">
 							<tr style="height : 100px">
 								<td>
-									<img alt="${ product.name }" height="100" src="<c:url value="${product.getImage()}"/>" />
+									<img alt="${ product.name }" height="100" src="${product.getImage()}" />
 								</td>
 								<td>
 									<a href="<c:url value="/p/${ product.getUrl() }"/>">${ product.getName() }</a>

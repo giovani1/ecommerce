@@ -28,11 +28,13 @@ public class Name {
 	public static final String ADRESS = "adresse";
 	public static final String REVIEW = "review";
 	
+	
 	//Session variables
 	public static final String ID_ADDRESS_TO_UPDATE = "addresseId";
 	public static final String ID_REVIEW_TO_UPDATE = "reviewId";
 	public static final String ACCOUNT_TYPE = "accountType";
 	public static final String ACCOUNT = "account";
+	public static final String SIZE_OF_CART = "numbercart";
 	//URLs
 	public static final String PROFIL = "/client";
 	public static final String ADDRESSES = "/addresse";
